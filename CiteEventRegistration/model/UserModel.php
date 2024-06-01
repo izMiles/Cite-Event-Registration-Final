@@ -95,7 +95,7 @@ class UserModel {
         }
     }
 
-   public function getUpcomingEvents($user_id) {
+    public function getUpcomingEvents($user_id) {
         $events_sql = "
             SELECT e.*
             FROM events e
@@ -128,6 +128,79 @@ class UserModel {
         }
         return $recent_events;
     }
+
+    public function getRegisteredEvents($userId) {
+        $registered_events_sql = "SELECT event_title, registration_date FROM registrations WHERE user_id = $userId";
+        $registered_events_result = mysqli_query($this->conn, $registered_events_sql);
+        $registered_events = [];
+        if ($registered_events_result && mysqli_num_rows($registered_events_result) > 0) {
+            while ($row = mysqli_fetch_assoc($registered_events_result)) {
+                $registered_events[] = $row;
+            }
+        }
+        return $registered_events;
+    }
+
+    public function isUserRegisteredForEvent($user_id, $event_title) {
+        $query = "SELECT COUNT(*) FROM registrations WHERE user_id = ? AND event_title = ?";
+        $stmt = mysqli_prepare($this->conn, $query);
+        mysqli_stmt_bind_param($stmt, 'is', $user_id, $event_title);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $count);
+        mysqli_stmt_fetch($stmt);
+        mysqli_stmt_close($stmt);
+
+        return $count > 0;
+    }
+
+   
+    
+    private function validate($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
+    
+    public function registerForEvent($eventTitle, $userId, $userName, $section, $department) {
+        $eventTitle = mysqli_real_escape_string($this->conn, $eventTitle);
+        $userId = mysqli_real_escape_string($this->conn, $userId);
+        $userName = mysqli_real_escape_string($this->conn, $userName);
+        $section = mysqli_real_escape_string($this->conn, $section);
+        $department = mysqli_real_escape_string($this->conn, $department);
+        $registrationDate = date('Y-m-d');
+    
+        $insertSql = "INSERT INTO registrations (event_title, user_id, user_name, section, department, registration_date) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($this->conn, $insertSql);
+        mysqli_stmt_bind_param($stmt, "sissss", $eventTitle, $userId, $userName, $section, $department, $registrationDate);
+    
+        if (mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_close($stmt);
+            return true;
+        } else {
+            error_log("Error executing statement: " . mysqli_stmt_error($stmt));
+            mysqli_stmt_close($stmt);
+            return false;
+        }
+    }
+    
+    public function getRegistrationInfo($eventTitle, $userId) {
+        $sql = "SELECT * FROM registrations WHERE user_id = ? AND event_title = ?";
+        $stmt = mysqli_prepare($this->conn, $sql);
+        mysqli_stmt_bind_param($stmt, "is", $userId, $eventTitle);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+    
+        $registrationInfo = null;
+        if ($row = mysqli_fetch_assoc($result)) {
+            $registrationInfo = $row;
+        }
+    
+        mysqli_stmt_close($stmt);
+        return $registrationInfo;
+    }
+    
     }
     ?>
     
