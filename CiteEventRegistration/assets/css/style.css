@@ -1,0 +1,461 @@
+body {
+    background-image: url("../img/bggg.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    margin: 0; /* Remove default margin */
+}
+
+* {
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+form {
+    width: 500px;
+    border: 2px solid #ccc;
+    padding: 30px;
+    background: #fff;
+    border-radius: 15px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+input, select {
+    display: block;
+    border: 2px solid #ccc;
+    width: 95%;
+    padding: 10px;
+    margin: 10px auto;
+    border-radius: 5px;
+}
+
+label {
+    color: #888;
+    font-size: 18px;
+    padding: 10px;
+}
+
+button {
+    background: #555;
+    padding: 10px 15px;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+}
+
+button:hover {
+    opacity: .7;
+}
+
+.error {
+    background: #F2DEDE;
+    color: #A94442;
+    padding: 10px;
+    width: 95%;
+    border-radius: 5px;
+    margin: 20px auto;
+}
+
+.success {
+    background: #D4EDDA;
+    color: #40754C;
+    padding: 10px;
+    width: 95%;
+    border-radius: 5px;
+    margin: 20px auto;
+}
+
+.ca {
+    font-size: 14px;
+    display: inline-block;
+    text-decoration: none;
+    color: #444;
+}
+
+.ca:hover {
+    text-decoration: underline;
+}
+
+.login-btn {
+    margin-bottom: 20px;
+    display: flex;
+    margin-left: 45%;
+    gap: 80px;
+}
+
+.header-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    margin: 20px;
+    padding: 10px;
+}
+
+.userlogo img {
+    width: 70px; /* Adjust width as needed */
+    height: 70px; /* Adjust height as needed */
+    margin-right: 20px; /* Space between the image and the text */
+    margin-left: 3rem;
+}
+
+.homeheader {
+    color: black;
+    font-size: 34px; /* Adjust font size as needed */
+    margin: 0; /* Reset margin to align properly with the logo */
+}
+
+.logoutbtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 30px;
+    margin-right: 10rem;
+    padding: 20px;
+    color: black;
+    text-decoration: none;
+    font-size: 34px;
+}
+
+.logoutbtn:hover {
+    text-decoration: underline;
+    text-decoration-color: black;
+    text-underline-offset: 7px;
+}
+
+.main-display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid rgb(107, 107, 107);
+    background-color: rgb(242, 242, 242);
+    padding: 5rem;
+    height: 60%;
+    width: 43%;
+    margin-top: 5%;
+    border-radius: 15px;
+}
+
+.hometitle {
+    position: absolute;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 4rem;
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
+    top: 7%;
+}
+
+.eventlist-title{
+    position: absolute;
+    top: 27%;
+}
+
+.upcoming-events, .registered-events {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.8);
+    width: 20%;
+    border: 2px solid rgb(107, 107, 107);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.downloadbtn{
+    background: #555;
+    padding: 10px 15px;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    text-decoration: none;
+    margin-left: 20%;
+}
+
+.upcoming-events {
+    left: 4%;
+    top: 30%;
+}
+
+.registered-events {
+    right: 4%;
+    top: 30%;
+}
+
+.upcoming-events h2, .registered-events h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15%;
+}
+
+.upcoming-events ul, .registered-events ul {
+    list-style: none;
+    padding: 0;
+}
+
+.upcoming-events li, .registered-events li {
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.upcoming-events button {
+    position: absolute;
+    right: 7%;
+    background: #555;
+    padding: 5px 10px;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.upcoming-events button:hover {
+    opacity: .7;
+}
+
+
+/* Style for the select element */
+.styled-select {
+    display: block;
+    width: 95%;
+    padding: 10px;
+    margin: 10px auto;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #444;
+}
+
+/* Style the select element on focus */
+.styled-select:focus {
+    border-color: #888;
+    outline: none;
+}
+
+/* Style for the options */
+.styled-select option {
+    padding: 10px;
+    font-size: 16px;
+}
+
+.registration-date {
+    display: block;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.recent-events {
+    position: absolute;
+    left: 4%;
+    top: 64%;
+    background: rgba(255, 255, 255, 0.8);
+    width: 20%;
+    border: 2px solid rgb(107, 107, 107);
+    padding: 20px;
+    border-radius: 15px;
+}
+
+/* Styles for event-list */
+.event-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Adjusted alignment to start from the top */
+    align-items: center;
+    border: 2px solid rgb(107, 107, 107);
+    background-color: rgb(242, 242, 242);
+    padding: 1rem;  /* Adjusted padding for better fit */
+    width: 30%;  /* Adjusted width for better fit */
+    margin-top: 5%;
+    border-radius: 15px;
+    max-height: 80%; /* Adjust this height as needed */
+    overflow-y: auto;
+}
+
+.event-list h2 {
+    font-size: 2rem;  /* Adjusted font size for better readability */
+    margin-bottom: 1rem; /* Adjusted margin bottom for better spacing */
+}
+
+.event-list table {
+    margin-top: 1rem; /* Adjusted margin top for better spacing */
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensures consistent column width */
+}
+
+.event-list table th, .event-list table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden; /* Ensures overflow handling */
+    text-overflow: ellipsis; /* Displays ellipsis for overflowed text */
+}
+
+.event-list table th {
+    background-color: #f4f4f4;
+    font-size: 18px;
+}
+
+.user-list{
+    position: absolute;
+    left: 2%;
+    top: 25%;
+    height: 70%;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgb(107, 107, 107);
+    border-radius: 15px;
+    width: 30%;
+    padding: 20px;
+    max-height: 80%; /* Adjust this height as needed */
+    overflow-y: auto;
+    
+}
+
+.user-list h2 {
+    margin-bottom: 10px;
+}
+.user-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+.user-list li {
+    margin-bottom: 5px;
+}
+
+
+/* Popup styling */
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+.popup input {
+    display: block; 
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.popup button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.popup button:hover {
+    background-color: #0056b3;
+}
+
+
+.remove-btn {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+.remove-btn:hover {
+    background-color: #555;
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 29%;
+    border-radius: 10px;
+}   
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Styles for the department users list */
+.department-users {
+    position: absolute;
+    right: 2%;
+    top: 25%;
+    height: 70%;
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid rgb(107, 107, 107);
+    border-radius: 15px;
+    padding: 1rem;
+    width: 30%;
+    overflow-y: auto;
+}
+
+.horizontal-scroll {
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+
+.department-users h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.department-users select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+
+.department-users ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.department-users ul li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.department-users ul li:last-child {
+    border-bottom: none;
+}
