@@ -56,6 +56,45 @@ class UserModel {
         }
     }
 
+    public function signup($name, $username, $password, $re_password, $department, $section) {
+        $name = $this->validate($name);
+        $uname = $this->validate($username);
+        $pass = $this->validate($password);
+        $re_pass = $this->validate($re_password);
+        $dept = $this->validate($department);
+        $sec = $this->validate($section);
+
+        $user_data = 'uname='. $uname. '&name='. $name . '&department=' . $dept . '&section=' . $sec;
+
+        if (empty($uname) || empty($pass) || empty($re_pass) || empty($name) || empty($dept) || empty($sec)) {
+            header("Location: ../view/signup.php?error=All fields are required&$user_data");
+            exit();
+        } else if ($pass !== $re_pass) {
+            header("Location: ../view/signup.php?error=The confirmation password does not match&$user_data");
+            exit();
+        } else {
+            $pass = md5($pass);
+
+            $sql = "SELECT * FROM users WHERE user_name='$uname'";
+            $result = mysqli_query($this->conn, $sql);
+
+            if (mysqli_num_rows($result) > 0) {
+                header("Location: ../view/signup.php?error=The username is taken try another&$user_data");
+                exit();
+            } else {
+                $sql2 = "INSERT INTO users(user_name, password, name, department, section) VALUES('$uname', '$pass', '$name', '$dept', '$sec')";
+                $result2 = mysqli_query($this->conn, $sql2);
+                if ($result2) {
+                    header("Location: ../view/signup.php?success=Your account has been created successfully");
+                    exit();
+                } else {
+                    header("Location: ../view/signup.php?error=Unknown error occurred&$user_data");
+                    exit();
+                }
+            }
+        }
+    }
+
    public function getUpcomingEvents($user_id) {
         $events_sql = "
             SELECT e.*
