@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteRule ^$ index.php [L]
+RewriteRule ^login$ controllers/LoginController.php [L]
+RewriteRule ^register$ controllers/RegisterController.php [L]
