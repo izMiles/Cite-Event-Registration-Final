@@ -70,6 +70,46 @@ $registeredEvents = $userModel->getRegisteredEvents($user_id);
         </ul>
     </div>
 
-    
+    <div class="registered-events">
+    <h2>Registered Events</h2>
+    <ul>
+        <?php foreach ($registeredEvents as $event): ?>
+            <li>
+                <?php echo htmlspecialchars($event['event_title']); ?>
+                <a href="../controller/HomeController.php?action=downloadRegistration&event_title=<?php echo urlencode($event['event_title']); ?>" class="downloadbtn">Download</a>
+                <span class="registration-date"><?php echo htmlspecialchars($event['registration_date']); ?></span>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+
+
+    <script>
+        function showRegistrationForm(eventTitle) {
+    const mainDisplay = document.getElementById('main-display');
+    mainDisplay.innerHTML = `
+        <h2>Register for ${eventTitle}</h2>
+        <form method="post" action="../controller/HomeController.php">
+            <input type="hidden" name="action" value="registerForEvent">
+            <input type="hidden" name="event_title" value="${eventTitle}">
+            <label for="user_id">User ID:</label>
+            <input type="text" id="user_id" name="user_id" value="<?php echo $_SESSION['id']; ?>" readonly required>
+            <label for="user_name">Confirm Full Name:</label>
+            <input type="text" id="user_name" name="user_name" required>
+            <label for="section">Confirm Section:</label>
+            <input type="text" id="section" name="section" required>
+            <label for="department">Confirm Department:</label>
+            <select id="department" name="department" class="styled-select" required>
+                <option value="Electrical Department">Electrical Department</option>
+                <option value="Electronics Department">Electronics Department</option>
+                <option value="Mechanical Department">Mechanical Department</option>
+                <option value="Computer Department">Computer Department</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    `;
+}
+    </script>
+
 </body>
 </html>
