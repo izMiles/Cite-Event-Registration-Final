@@ -56,7 +56,39 @@ class UserModel {
         }
     }
 
-   
+   public function getUpcomingEvents($user_id) {
+        $events_sql = "
+            SELECT e.*
+            FROM events e
+            LEFT JOIN registrations r ON e.event_title = r.event_title AND r.user_id = ?
+            WHERE r.user_id IS NULL AND e.date >= CURDATE()
+            ORDER BY e.date ASC
+        ";
+        $stmt = mysqli_prepare($this->conn, $events_sql);
+        mysqli_stmt_bind_param($stmt, 'i', $user_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $events = [];
+        if ($result && mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $events[] = $row;
+            }
+        }
+        mysqli_stmt_close($stmt);
+        return $events;
+    }   
+
+    public function getRecentEvents() {
+        $recent_events_sql = "SELECT * FROM events WHERE date < CURDATE() ORDER BY date DESC";
+        $recent_events_result = mysqli_query($this->conn, $recent_events_sql);
+        $recent_events = [];
+        if ($recent_events_result && mysqli_num_rows($recent_events_result) > 0) {
+            while ($row = mysqli_fetch_assoc($recent_events_result)) {
+                $recent_events[] = $row;
+            }
+        }
+        return $recent_events;
+    }
     }
     ?>
     
