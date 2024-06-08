@@ -2,8 +2,8 @@
 session_start();
 include "../database/db_conn.php";
 
-// Check if the user is logged in and is an admin
-if (isset($_SESSION['id']) && isset($_SESSION['user_name']) && $_SESSION['user_type'] === 'admin') {
+    // Check if the user is logged in and is an admin
+    if (isset($_SESSION['id']) && isset($_SESSION['user_name']) && $_SESSION['user_type'] === 'admin') {
     $user_name = $_SESSION['user_name'];
 
     // Fetch all events from the database
@@ -15,6 +15,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name']) && $_SESSION['user_t
             $events[] = $row;
         }
     }
+    
+     if (isset($_GET['event'])){
+         $selected_event = $_GET['event'];
+     }
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +36,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name']) && $_SESSION['user_t
 
     <h1 class="hometitle">Admin Panel - Events</h1>
 
+    <!-- Event List Window -->
     <div class="event-list main-display">
         <table>
             <tr>
@@ -62,38 +67,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name']) && $_SESSION['user_t
         <button onclick="openAddEventModal()" class="add-event-btn">Add Event</button>
     </div>
 
+
+    <!-- Registered Users in Event Window -->
     <div class="user-list">
-        <?php
-        // Check if a specific event is selected
-        if (isset($_GET['event'])) {
-            $selected_event = $_GET['event'];
-            $registrations_sql = "SELECT * FROM registrations WHERE event_title = ?";
-            $stmt = mysqli_prepare($conn, $registrations_sql);
-            mysqli_stmt_bind_param($stmt, "s", $selected_event);
-            mysqli_stmt_execute($stmt);
-            $registrations_result = mysqli_stmt_get_result($stmt);
-        ?>
-            <h2>Registered Users for <?php echo htmlspecialchars($selected_event); ?></h2>
-            <br>
-            <input type="text" id="searchInput" onkeyup="searchUsers()" placeholder="Search by name or department...">
-            <br>
-            <ul id="usersList" class="horizontal-scroll">
-                <!-- Loop through the registered users and display them -->
-                <?php while ($row = mysqli_fetch_assoc($registrations_result)): ?>
-                <li>
-                    <?php echo htmlspecialchars($row['user_name']); ?> - 
-                    <?php echo htmlspecialchars($row['section']); ?> - 
-                    <?php echo htmlspecialchars($row['department']); ?> - 
-                    <?php echo htmlspecialchars($row['registration_date']); ?>
-                    <button class="remove-btn" onclick="removeUser('<?php echo $selected_event; ?>', '<?php echo $row['user_id']; ?>')">Remove</button>
-                </li>
-                <?php endwhile; ?>
-            </ul>
-        <?php
-            mysqli_stmt_close($stmt);
-        }
-        ?>
+        <h2>Registered Users for <?php echo htmlspecialchars($selected_event); ?></h2>
+        <br>
+        <input type="text" id="searchInput" onkeyup="searchUsers()" placeholder="Search by name or department...">
+        <br>
+        <ul id="usersList" class="horizontal-scroll">
+            <!-- Users will be dynamically loaded here -->
+        </ul>
     </div>
+
 
     <!-- Users List by Department -->
     <div class="department-users">
@@ -132,7 +117,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name']) && $_SESSION['user_t
 
 
     <script>
-
         // Open the modal to add a new event
         function openAddEventModal() {
             var modal = document.getElementById("addEventModal");
@@ -166,25 +150,43 @@ if (isset($_SESSION['id']) && isset($_SESSION['user_name']) && $_SESSION['user_t
         }
 
 
+        function fetchRegistrations(eventTitle) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            document.getElementById('usersList').innerHTML = xhr.responseText;
+                        } else {
+                            alert('Error: Unable to fetch registrations.');
+                        }
+                    }
+                };
+                xhr.open("GET", "../controller/AdminController.php?event=" + encodeURIComponent(eventTitle), true);
+                xhr.send();
+            }
+
+            // Initial fetch
+            fetchRegistrations('<?php echo htmlspecialchars($selected_event); ?>');
+
         // Remove a user from an event
         function removeUser(eventTitle, userId) {
-    if (confirm("Are you sure you want to remove this user from the event?")) {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    alert(xhr.responseText);
-                    location.reload(); // Reload the page to reflect the changes
-                } else {
-                    alert('Error: Unable to remove user from the event.');
-                }
+            if (confirm("Are you sure you want to remove this user from the event?")) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            alert(xhr.responseText);
+                            location.reload(); // Reload the page to reflect the changes
+                        } else {
+                            alert('Error: Unable to remove user from the event.');
+                        }
+                    }
+                };
+                xhr.open("POST", "../controller/AdminController.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send("action=removeUserFromEvent&event_title=" + encodeURIComponent(eventTitle) + "&user_id=" + encodeURIComponent(userId));
             }
-        };
-        xhr.open("POST", "../controller/AdminController.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send("action=removeUserFromEvent&event_title=" + encodeURIComponent(eventTitle) + "&user_id=" + encodeURIComponent(userId));
-    }
-}
+        }
 
 
         // Fetch users by department
