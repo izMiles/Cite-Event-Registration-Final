@@ -31,7 +31,14 @@ class AdminModel {
         return true;
     }
 
-    
+    public function getRegistrationsByEvent($eventTitle) {
+        $sql = "SELECT * FROM registrations WHERE event_title = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $eventTitle);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 
     public function removeEvent($eventTitle) {
         $success = false;
