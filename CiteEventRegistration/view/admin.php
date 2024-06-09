@@ -16,9 +16,8 @@ include "../database/db_conn.php";
         }
     }
     
-     if (isset($_GET['event'])){
-         $selected_event = $_GET['event'];
-     }
+    $selected_event = isset($_GET['event']) ? $_GET['event'] : (isset($events[0]) ? $events[0]['event_title'] : '');
+
 ?>
 
 <!DOCTYPE html>
@@ -149,7 +148,7 @@ include "../database/db_conn.php";
             xhr.send("action=removeEvent&event_title=" + encodeURIComponent(eventTitle));
         }
 
-
+        // Fetch Registered Users in Event
         function fetchRegistrations(eventTitle) {
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
@@ -210,7 +209,7 @@ include "../database/db_conn.php";
             }
         }
 
-
+        // Remove User in Department List
         function removeUserFromDepartment(userId) {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "../controller/AdminController.php", true);
@@ -228,7 +227,7 @@ include "../database/db_conn.php";
             xhr.send("action=removeUserById&user_id=" + encodeURIComponent(userId));
         }
 
-
+        // Remove User in Registered Users in Event List
         function removeUserFromEvent(eventTitle, userId) {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "../controller/AdminController.php", true);
